@@ -1,11 +1,41 @@
+
 .players {
 	height: 200px;
 	width: 200px;
 	float: left;
 }
+.row {
+	margin-left: auto;
+	margin-right: auto;
+}
+.panel-min {
+	height: 350px;
+}
+.format-playarea {
+	min-height: 300px;
+}
+.format-msgarea {
+	min-height: 150px;
+}
+.currentPlayers {
+	float: left;
+}
+.score {
+	margin: auto;
+}
+#messages {
+	margin-top: auto;
+
+}
+
+p {
+	margin-top: 10px;
+}
 img {
-	height: 200px;
-	width: 200px;
+	height: 150px;
+	width: 150px;
 
-
+}
+body {
+	background-image: url("../../assets/images/background.png");
 }

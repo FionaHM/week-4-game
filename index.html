@@ -14,35 +14,58 @@
 <body>
 <script type="text/javascript" src="assets/javascript/game.js"></script>
 <div class="container">
+<div>
+<h1 class="text-center"> Star Wars RPG Game</h1>
+</div>
 
-<div class="row text-center">
-	<h1>Players</h1>
-	<div id="startofgame"></div>
-</div><!-- end of row   -->
-<div class="row text-center">
-<div class="col-md-4">
-	<h1>Defender</h1>
-	<div class="currentPlayers" id="defender"></div>
-	<div class="score" id="defenderhp"></div>
- </div> <!-- end col -->
- <div class="col-md-4 text-center">
+
+<div class="row text-center pagination-centered format-playarea">
+	<div class="col-md-4 col-xs-6">
+		<div class="panel panel-min">
+			<h2>Defender</h2>
+			<div class="row text-center pagination-centered "><div class="currentPlayers" id="defender"></div></div>
+			<div class="row text-center pagination-centered "><div class="score" id="defenderhp"></div></div>
+		</div>
+	 </div> <!-- end col -->
+
+	<div class="col-md-4"></div>
+
+	 <div class="col-md-4 col-xs-6">
+	    <div class="panel panel-min">
+			<h2>Opponent</h2>
+			<div class="row text-center pagination-centered "><div class="currentPlayers" id="opponent"></div></div>
+			<div class="row text-center pagination-centered "><div class="score" id="opponenthp"></div></div>
+		</div>
+	 </div> <!-- end col -->
+</div> <!-- end of row   -->
+
+<div class="row">
+ <div class="col-offset-2 col-md-4 ">
  	<div class="row text-center">
 		<button id="attack">Attack</button>
 	</div>
-	<div class="row text-center">
+ </div>
+</div>
+<div class="row">
+ <div class="col-md-4 ">
+    <div class="row text-center">
 		<button id="restart">Restart Game</button>
 	</div>
- </div> <!-- end col -->
- <div class="col-md-4">
-	<h1>Opponent</h1>
-	<div class="currentPlayers" id="opponent"></div>
-	<div class="score" id="opponenthp"></div>
- </div> <!-- end col -->
-</div> <!-- end of row   -->
+ </div>
+</div>
 
-<div class="row text-center">
+<!-- messages -->
+<div class="row text-center format-msgarea">
 	<div id="messages"></div>
-	
+</div>
+<!-- players panel -->
+<div class="panel">
+<div class="row text-center pagination-centered">
+  <div class="col-md-12">
+	<h1>Remaining Players</h1>
+	<div id="startofgame"></div>
+  </div>
+</div><!-- end of row   -->
 </div>
 
 

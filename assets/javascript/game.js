@@ -1,9 +1,9 @@
 var gamePlayersList ={
 	// id, class, image, attack power, health power, name, item referenece, 
-	playerData: [["player1", "players reset", "assets/images/player1.png", "5", "100", "Snow Chewbacca", 0], ["player2","players reset",  "assets/images/player2.png", "6", " 120", "Hordi", 1], ["player3","players reset",  "assets/images/player3.png", "7", "105", "Boba Fett", 2], ["player4", "players reset", "assets/images/player4.png", "18", "150", "Clone Commander Cody", 3]],
+	playerData: [["player1", "players", "assets/images/player1.png", "5", "100", "R2D2", 0], ["player2","players",  "assets/images/player2.png", "6", " 120", "Princess Leia", 1], ["player3","players",  "assets/images/player3.png", "7", "105", "Death Star Trooper", 2], ["player4", "players", "assets/images/player4.png", "18", "150", "Darth Vader", 3], ["player5", "players", "assets/images/player5.png", "5", "100", "Hans Solo", 4]],
 
 init: function(){
-
+	console.log("player data length" + this.playerData.length);
 	for(var i=0; i < this.playerData.length; i++){
 		var b = "";
 		b = $('<div/>', {
@@ -18,7 +18,8 @@ init: function(){
 		$("#startofgame").append(b);
 
 		var c = "";
-		c = $('<img>', {src: this.playerData[i][2], 
+		c = $('<img>', {src: this.playerData[i][2],
+			class: "img-responsive",
 		    alt: this.playerData[i][5]});
 		var imageID = '#' + this.playerData[i][0];
 		$(imageID).append(c);
@@ -91,7 +92,7 @@ var currentGame = {
 				console.log('defender hp' + this.defenderCurrentHp);
 				console.log('opponent hp' + this.opponentCurrentHp);
 				// winning message
-				$('#messages').html(this.defenderName + " has won the game against " + this.opponentName  + " congratulations!<br>");		
+				$('#messages').html('<p>' + this.defenderName + " has won the game against " + this.opponentName  + " congratulations!</p><br>");		
 				// find another opponent and reset
 				this.opponent = null;
 				// reset game
@@ -101,19 +102,19 @@ var currentGame = {
 				// empty related messages
 	   		    $('#opponenthp').empty();
 				//message to select a new opponent
-				if (this.countOpponents < 3) {
-					$('#messages').append("Select a new Opponent to start another game!");
+				if (this.countOpponents < 4) {
+					$('#messages').append('<p>Select a new Opponent to start another game!</p>');
 				}
 				else
 				{
-					$('#messages').append("Game Over you have defeated all 3 Opponent, Congratulations!!");
+					$('#messages').append('<p>Game Over you have defeated all 3 Opponent, Congratulations!</p>');
 				}
 			} 
 			else if ((this.defenderCurrentHp) <= 0) {
 			    console.log('defender hp' + this.defenderCurrentHp);
 				console.log('opponent hp' + this.opponentCurrentHp);
-				$('#messages').html(this.opponentName + " has won the game against " + this.defenderName  + ", too bad sorry!<br>");
-				$('#messages').append(' Select "Attack" or "Restart Game" to begin a new game. <br>');
+				$('#messages').html("<p>" +this.opponentName + " has won the game against " + this.defenderName  + ", too bad sorry!<br></p>");
+				$('#messages').append('<p> Select "Attack" or "Restart Game" to begin a new game. </p><br>');
 				// reset the game
 				this.reloadGame = true;
 			}
@@ -186,7 +187,7 @@ $('document').ready(function(){
 	   		currentGame.gamePlay();	
 	   	} 
 	   	else {
-	   		$('#messages').html("Select both Player and Opponent to begin game!");
+	   		$('#messages').html('<p>Select both Player and Opponent to begin game!</p>');
 	   	}
 
    });
