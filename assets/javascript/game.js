@@ -1,28 +1,54 @@
 var gamePlayersList ={
 	// id, class, image, attack power, health power, name, item referenece, 
-	playerData: [["player1", "players", "assets/images/player1.png", "5", "100", "R2D2", 0], ["player2","players",  "assets/images/player2.png", "6", " 120", "Princess Leia", 1], ["player3","players",  "assets/images/player3.png", "7", "105", "Death Star Trooper", 2], ["player4", "players", "assets/images/player4.png", "18", "150", "Darth Vader", 3], ["player5", "players", "assets/images/player5.png", "5", "100", "Hans Solo", 4]],
+	playerData: [
+	["player1", "players", "assets/images/player1.png", "5", "100", "R2D2", 0], 
+	["player2","players",  "assets/images/player2.png", "6", " 120", "Princess Leia", 1], 
+	["player3","players",  "assets/images/player3.png", "7", "105", "Death Star Trooper", 2], 
+	["player4", "players", "assets/images/player4.png", "18", "150", "Darth Vader", 3], 
+	["player5", "players", "assets/images/player5.png", "5", "100", "Hans Solo", 4],
+	["player6", "players", "assets/images/player6.png", "5", "100", "AWing Pilot", 5]],
+
 
 init: function(){
-	console.log("player data length" + this.playerData.length);
 	for(var i=0; i < this.playerData.length; i++){
-		var b = "";
+		// set variables
+		var currentID = this.playerData[i][0];
+		var newCurrentID = "";
+		var b = '';
+		var c = '';
+
 		b = $('<div/>', {
-	        id: this.playerData[i][0],
-	        class: this.playerData[i][1],
+	        id: currentID,
+	        class: this.playerData[i][1] + " col-xs-4 col-md-2",
 	        value: this.playerData[i][3], 
 			name: this.playerData[i][5],
     	});
-    	b.attr("data-hp", this.playerData[i][4]); //healthpower
-    	b.attr("data-src", this.playerData[i][2]); //healthpower
-		
-		$("#startofgame").append(b);
+    	b.attr('data-hp', this.playerData[i][4]); //healthpower
+    	b.attr('data-src', this.playerData[i][2]); //healthpower
+    	// add to parent div on index.html page
+		$('#startofgame').append(b);
+    	
 
-		var c = "";
+    	//  label the image with player name
+    	newCurrentID = '#' + currentID;
+    	$(newCurrentID).append('<h3>' + this.playerData[i][5] + '</h3>');
+
+		// create the image tag with its attributes
 		c = $('<img>', {src: this.playerData[i][2],
-			class: "img-responsive",
+			// class: 'img-responsive',
 		    alt: this.playerData[i][5]});
-		var imageID = '#' + this.playerData[i][0];
-		$(imageID).append(c);
+		$(newCurrentID).append(c);
+
+		//  label the image 
+
+		// add health and attack power stats
+		$(newCurrentID).append('<p class="base-score"> Health Points: ' + this.playerData[i][3] + '</p>');
+		$(newCurrentID).append('<p class="base-score"> Attack Power:  ' + this.playerData[i][4] + '</p>');
+		newCurrentID = currentID + 'HP';
+		$('.base-score-hp').attr('id', newCurrentID );
+		newCurrentID = currentID + 'AP';
+		$('.base-score-ap').attr('id', newCurrentID );
+
 
 	}
 }  // end of init
@@ -60,7 +86,6 @@ var currentGame = {
 			this.opponentAttack = $(localOpponent).attr('value');
 			// the defender (player) Current HP and Attack Points are the base HP for the first opponent only
 			// they are carried over for the next games
-			console.log("count of oppoenents " + this.countOpponents);
 			if (this.countOpponents === 1) {
 				this.defenderCurrentHp = this.defenderBaseHp;
 				this.defenderCurrentAttack = this.defenderBaseAttack;
@@ -81,8 +106,8 @@ var currentGame = {
 		// check healthpoints of each player
 			if ((this.defenderCurrentHp <= 0) && (this.opponentCurrentHp <= 0)){
 				// if both go below 0 at same attack - both dead and no winner
-				$('#messages').html("You are both dead no one has won the game.<br>");		
-				$('#messages').append(' Select "Attack" or "Restart Game" to begin a new game. <br>');
+				$('#messages').html('You are have been defeated by your opponent, you have lost the game.<br>');		
+				$('#messages').append(' Select "Attack" or "Restart Game" to begin a new game against a new set of Opponents.  Choose wisely! <br>');
 				// retart game
 				this.reloadGame = true;
 
@@ -92,7 +117,7 @@ var currentGame = {
 				console.log('defender hp' + this.defenderCurrentHp);
 				console.log('opponent hp' + this.opponentCurrentHp);
 				// winning message
-				$('#messages').html('<p>' + this.defenderName + " has won the game against " + this.opponentName  + " congratulations!</p><br>");		
+				$('#messages').html('<p>' + this.defenderName + ' has won the game against ' + this.opponentName  + ' congratulations!</p><br>');		
 				// find another opponent and reset
 				this.opponent = null;
 				// reset game
@@ -148,26 +173,48 @@ $('document').ready(function(){
 	$('.players').click(function(){
 	
 		if (!currentGame.defender){
-			console.log("going in here");
+			// remove base health and ap data - this will be moved to another area
 			$('#defender').html(this); //moves to defender correct div area
 			currentGame.defender = $(this).attr("id");
+
+
 			 // initial messages
 			$('#messages').empty();
+		    // clear old HP and AP data
+		    $( '#defender > .players > p.base-score').empty();
+		    // change the col layout
+		    $('#defender > .players').removeClass("col-xs-4 col-md-2");
+			$('#defender > .players').addClass("col-xs-12");
+
 		    // health and attack data display
+		    $( '#defender > .players > p.base-score').attr("id", "defenderhp");
 	   		$('#defenderhp').html('Health Points:   ' + $(this).data("hp") + '<br>');
 	   		$('#defenderhp').append('Attack Power:   ' +  $(this).attr("value") +  '<br>');
+
+	   		
 	   		
 			 
 		}
 		else if (!currentGame.opponent){
-			console.log("and in here");
 			 $('#opponent').html(this); //moves to opponent to correct div area
 			 currentGame.opponent = $(this).attr("id");
 			 currentGame.countOpponents = currentGame.countOpponents + 1;
-			 console.log("count opponents " + currentGame.countOpponents);
+			
+			$( '#opponent > .players > p.base-score').empty();
+			// change the col layout
+			$('#opponent > .players').removeClass("col-xs-4 col-md-2");
+			$('#opponent > .players').addClass("col-xs-12");
+		    // health and attack data display
+		    $( '#opponent > .players > p.base-score').attr("id", "opponenthp");
 			 // health and attack data display
 			$('#opponenthp').html('Health Points:   ' + $(this).data("hp") + '<br>');
 	   		$('#opponenthp').append('Attack Power:    ' + $(this).attr("value") + '<br>');
+
+	   		//reshuffle remaining players initially
+
+	   		$('#startofgame').prepend('<div class="col-md-2" ></div>');
+	   		$('#startofgame > .players').removeClass("col-xs-4 col-md-2");
+	   		$('#startofgame > .players').addClass("col-xs-6 col-md-2");
 		}
 
 		 
@@ -177,8 +224,7 @@ $('document').ready(function(){
    $('#attack').click(function(){
 	    // make sure both players have been selected to begin playing
 	    if (currentGame.reloadGame){
-	    	// if true then restart the game
-	    	console.log("eloading game");
+	    	// if true then restart the game - best way i can see is to reload page to reset everything
 	    	location.reload();
 	    	currentGame.reloadGame = null;
 	    }
@@ -187,7 +233,7 @@ $('document').ready(function(){
 	   		currentGame.gamePlay();	
 	   	} 
 	   	else {
-	   		$('#messages').html('<p>Select both Player and Opponent to begin game!</p>');
+	   		$('#messages').html('<p>Select both a Player and an Opponent to begin game!</p>');
 	   	}
 
    });
