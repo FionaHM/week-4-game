@@ -146,7 +146,8 @@ var currentGame = {
 					console.log('opponent hp' + this.opponentCurrentHp);
 					// winning messagemessageDisplay = true;
 		   			$('.modal').show();
-					$('#messages').html('<p>' + this.defenderName + ' has won the game against ' + this.opponentName  + '. <br>Congratulations!</p><br>');		
+					$('#messages').html('<p>' + this.defenderName + ' has won the game against ' + this.opponentName  + '. <br>Congratulations!</p>');		
+					$('#messages').append('<p>You have ' + this.defenderCurrentAttack + ' attack points for the next game. Well done.</p>');
 					// find another opponent and reset
 					this.opponent = null;
 					// reset game
