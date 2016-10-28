@@ -3,30 +3,21 @@ var messageDisplay = false;
 var gamePlayersList ={
 	// id, class, image, attack power, health power, name, item referenece, 
 	playerData: [
-	["player1", "players", "assets/images/player1.png", "20", "100", "R2D2"], 
-	["player2","players",  "assets/images/player2.png", "6", " 120", "Princess Leia"], 
-	["player3","players",  "assets/images/player3.png", "7", "165", "Darth Vader"], 
-	["player4", "players", "assets/images/player4.png", "18", "150", "Death Star Trooper"], 
-	["player5", "players", "assets/images/player5.png", "15", "90", "Hans Solo"],
-	["player6", "players", "assets/images/player6.png", "5", "140", "AWing Pilot"]],
+	["player1", "players", "assets/images/player1.png", "20", "100", "R2D2", 0], 
+	["player2","players",  "assets/images/player2.png", "6", " 120", "Princess Leia", 1], 
+	["player3","players",  "assets/images/player3.png", "7", "105", "Death Star Trooper", 2], 
+	["player4", "players", "assets/images/player4.png", "18", "150", "Darth Vader", 3], 
+	["player5", "players", "assets/images/player5.png", "5", "100", "Hans Solo", 4],
+	["player6", "players", "assets/images/player6.png", "5", "100", "AWing Pilot", 5]],
 
 
 init: function(){
-	// before i add anything I just make sure there is nothing left from any previous games
-		$('#startofgame').empty();
-		$('#defender').empty();
-		$('#opponent').empty();
-
 	for(var i=0; i < this.playerData.length; i++){
 		// set variables
 		var currentID = this.playerData[i][0];
 		var newCurrentID = "";
 		var b = '';
 		var c = '';
-
-		
-
-
 
 		b = $('<div/>', {
 	        id: currentID,
@@ -130,11 +121,11 @@ var currentGame = {
 	   		    $('#opponenthp').append('Attack Power:    ' + currentGame.opponentAttack + '<br>');
 
 				// check health of each player
-				if ((this.defenderCurrentHp <= 0) && (this.opponentCurrentHp <= 0)) {
+				if ((this.defenderCurrentHp <= 0) && (this.opponentCurrentHp <= 0)){
 					// if both go below 0 at same attack - both dead and no winner
 					messageDisplay = true;
 		   			$('.modal').show();
-					$('#messages').html('You have both lost all Health Points and died. <br> You have lost the game.<br>');		
+					$('#messages').html('You have been defeated by your opponent. <br> You have lost the game.<br>');		
 					$('#messages').append(' Select "Restart Game" to begin a new game against a new set of Opponents. <br>  Choose wisely! <br>');
 					// retart game
 					this.reloadGame = true;
@@ -146,7 +137,9 @@ var currentGame = {
 					console.log('opponent hp' + this.opponentCurrentHp);
 					// winning messagemessageDisplay = true;
 		   			$('.modal').show();
-					$('#messages').html('<p>' + this.defenderName + ' has won the game against ' + this.opponentName  + '. <br>Congratulations!</p><br>');		
+					$('#messages').html('<p>' + this.defenderName + ' has won the game against ' + this.opponentName  + ' congratulations!</p><br>');
+					$('#messages').append('<p>' + this.defenderName + 'now has ' + this.defenderCurrentAttack  + ' Attack Points for the next game!</p><br>');		
+					
 					// find another opponent and reset
 					this.opponent = null;
 					// reset game
@@ -165,7 +158,7 @@ var currentGame = {
 					{
 						messageDisplay = true;
 		   				$('.modal').show();
-						$('#messages').append('<p>Game Over! <br> You have defeated all opponents. Congratulations!</p>');
+						$('#messages').append('<p>Game Over! <br> You have defeated all opponents, congratulations!</p>');
 					}
 				} 
 				else if ((this.defenderCurrentHp) <= 0) {
@@ -173,58 +166,29 @@ var currentGame = {
 					console.log('opponent hp' + this.opponentCurrentHp);
 					messageDisplay = true;
 		   			$('.modal').show();
-					$('#messages').html("<p> You have been defeated by " +this.opponentName + ". <br> Too bad sorry!<br></p>");
-					$('#messages').append('<p> Select "Restart Game" to begin a new game. </p><br>');
+					$('#messages').html("<p>" +this.opponentName + " has won the game against " + this.defenderName  + ", too bad sorry!<br></p>");
+					$('#messages').append('<p> Select "Attack" or "Restart Game" to begin a new game. </p><br>');
 					// reset the game
 					this.reloadGame = true;
 				}
 
 		}  // end of outer if loop
-	},  // end of playGame function
-
-	reset: function(){
-		// just resets everything without reloading the page
-		messageDisplay = false;
-		//console.log(this);
-		this.gameStarted = null;
-		this.defenderName  =  "";
-		this.opponentName =  "";
-		this.defender =  null;
-		this.opponent =  null;
-		this.defenderBaseHp =  0;
-		this.opponentBaseHp =  0;
-		this.defenderCurrentHp =  0;
-		this.opponentCurrentHp =  0;
-		this.defenderBaseAttack =  0;
-		this.defenderCurrentAttack =  0;
-		this.opponentAttack  = 0;
-		this.gameWinner =  "";
-		this.attackCount =  0;
-		this.countOpponents =  0;
-		this.reloadGame  = null;
-        // somehow the onclick detaches from the player class when i reset everything - so I need to reattach it here
-		$('.players').click(function(){
-			// must pass the current player object to the function
-			var player = this; 
-		 	selectPlayers(player);
-
-		});
-
-	}
-
-    
+	}  // end of playGame function
 } // end of currentGame Object
 
-function selectPlayers(player){
-    	
-	if (!messageDisplay) {  // making sure user closes any modal message before selecting a player
-			
-			/// user player object passed instead of this below.
 
+$('document').ready(function(){
+	//loads the players into brower
+	gamePlayersList.init();
+
+	// user clicks a player to select it as defender (player) and then opponent
+	$('.players').click(function(){
+		
+	if (!messageDisplay) {  // making sure user closes any modal message before selecting a player
 		if (!currentGame.defender){
 			// remove base health and ap data - this will be moved to another area
-			$('#defender').html(player); //moves to defender correct div area
-			currentGame.defender = $(player).attr("id");
+			$('#defender').html(this); //moves to defender correct div area
+			currentGame.defender = $(this).attr("id");
 
 
 			 // initial messages
@@ -237,13 +201,16 @@ function selectPlayers(player){
 
 		    // health and attack data display
 		    $( '#defender > .players > p.base-score').attr("id", "defenderhp");
-	   		$('#defenderhp').html('Health Points:   ' + $(player).data("hp") + '<br>');
-	   		$('#defenderhp').append('Attack Power:   ' +  $(player).attr("value") +  '<br>');
-		 
+	   		$('#defenderhp').html('Health Points:   ' + $(this).data("hp") + '<br>');
+	   		$('#defenderhp').append('Attack Power:   ' +  $(this).attr("value") +  '<br>');
+
+	   		
+	   		
+			 
 		}
 		else if (!currentGame.opponent){
-			 $('#opponent').html(player); //moves to opponent to correct div area
-			 currentGame.opponent = $(player).attr("id");
+			 $('#opponent').html(this); //moves to opponent to correct div area
+			 currentGame.opponent = $(this).attr("id");
 			 currentGame.countOpponents = currentGame.countOpponents + 1;
 			
 			$( '#opponent > .players > p.base-score').empty();
@@ -254,8 +221,8 @@ function selectPlayers(player){
 		    // health and attack data display
 		    $( '#opponent > .players > p.base-score').attr("id", "opponenthp");
 			 // health and attack data display
-			$('#opponenthp').html('Health Points:   ' + $(player).data("hp") + '<br>');
-	   		$('#opponenthp').append('Attack Power:    ' + $(player).attr("value") + '<br>');
+			$('#opponenthp').html('Health Points:   ' + $(this).data("hp") + '<br>');
+	   		$('#opponenthp').append('Attack Power:    ' + $(this).attr("value") + '<br>');
 
 	   		//reshuffle remaining players initially
 
@@ -263,19 +230,8 @@ function selectPlayers(player){
 	   		$('#startofgame > .players').removeClass("col-xs-4 col-md-2");
 	   		$('#startofgame > .players').addClass("col-xs-6 col-md-2");
 		}
+
 	}
-}
-
-$('document').ready(function(){
-	//loads the players into brower
-	gamePlayersList.init();
-
-	// user clicks a player to select it as defender (player) and then opponent
-	$('.players').click(function(){
-		// must pass the current player object to the function
-		var player = this; 
-	 	selectPlayers(player);
-
 	});
 
     // attack button logic
@@ -283,9 +239,8 @@ $('document').ready(function(){
 	    // make sure both players have been selected to begin playing
 	    if (currentGame.reloadGame){
 	    	// if true then restart the game - best way i can see is to reload page to reset everything
-	        gamePlayersList.init();
-            currentGame.reset();
-	    	//currentGame.reloadGame = null;
+	    	location.reload();
+	    	currentGame.reloadGame = null;
 	    }
 	   	if ((currentGame.defender !== null ) && (currentGame.opponent !== null)) {
 	   		currentGame.gameInit();
@@ -301,10 +256,7 @@ $('document').ready(function(){
 
    $('#restart').click(function(){
 	    /// just reloads the page and everything is refreshed.
-           // location.reload();
-           gamePlayersList.init();
-           currentGame.reset();
-
+           location.reload();
 
    });
 
