@@ -33,7 +33,7 @@
 	 /*min-height: 200px;*/
 /*	 background-image: url("../../assets/images/background.png");*/
 /*}*/
-*/.section6 {
+/.section6 {
 	  min-height: 40%;
 }
 .players {
@@ -60,7 +60,7 @@
 }
 .modal {
     display: none; /* Hidden by default */
-   /* position: relative;  */
+    position: fixed; 
     z-index: 100; /* Sit on top */
     padding-top: 10px; /* Location of the box */
     padding-left: 5px;
@@ -132,6 +132,9 @@
 
 p {
 	margin-top: 10px;
+	font-size: 15px;
+	line-height: 1;
+	font-family: "Roboto", "Sans Serif";
 }
 img {
 	height: 200px;
@@ -142,13 +145,19 @@ img {
 }
 body {
 	background-image: url("../../assets/images/background.png");
+	font-family: "Roboto", "Sans Serif";
 	
 }
-
+h1{
+	font-size: 40px;
+}
 h3{
 	line-height: 1;
 	min-height: 50px;
+	font-family: "Roboto", "Sans Serif";
 }
 h2 {
 	/*width: 50%;*/
+	font-family: "Roboto", "Sans Serif";
+	text-decoration: underline;
 }

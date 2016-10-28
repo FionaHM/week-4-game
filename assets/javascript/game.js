@@ -134,8 +134,8 @@ var currentGame = {
 					// if both go below 0 at same attack - both dead and no winner
 					messageDisplay = true;
 		   			$('.modal').show();
-					$('#messages').html('You have both lost all Health Points and died. <br> You have lost the game.<br>');		
-					$('#messages').append(' Select "Restart Game" to begin a new game against a new set of Opponents. <br>  Choose wisely! <br>');
+					$('#messages').html('<p>You have both lost all Health Points and died. </p><p>You have lost the game.</p>');		
+					$('#messages').append('<p> Select "Restart Game" to begin a new game against a new set of Opponents. </p><p>  Choose wisely! </p>');
 					// retart game
 					this.reloadGame = true;
 
@@ -145,6 +145,7 @@ var currentGame = {
 					console.log('defender hp' + this.defenderCurrentHp);
 					console.log('opponent hp' + this.opponentCurrentHp);
 					// winning messagemessageDisplay = true;
+					messageDisplay = true;
 		   			$('.modal').show();
 					$('#messages').html('<p>' + this.defenderName + ' has won the game against ' + this.opponentName  + '. <br>Congratulations!</p>');		
 					$('#messages').append('<p>You have ' + this.defenderCurrentAttack + ' attack points for the next game. Well done.</p>');
@@ -170,8 +171,8 @@ var currentGame = {
 					}
 				} 
 				else if ((this.defenderCurrentHp) <= 0) {
-				    console.log('defender hp' + this.defenderCurrentHp);
-					console.log('opponent hp' + this.opponentCurrentHp);
+				 //    console.log('defender hp' + this.defenderCurrentHp);
+					// console.log('opponent hp' + this.opponentCurrentHp);
 					messageDisplay = true;
 		   			$('.modal').show();
 					$('#messages').html("<p> You have been defeated by " +this.opponentName + ". <br> Too bad sorry!<br></p>");
@@ -270,7 +271,14 @@ function selectPlayers(player){
 $('document').ready(function(){
 	//loads the players into brower
 	gamePlayersList.init();
-
+	messageDisplay = true;
+	$('.modal').show();
+	$('#messages').html('<h3>How to Play!</h3>');
+	$('#messages').append('<p>To Play select a Player and an Opponent from the "Remaining Players" at the bottom of the screen.</p>');
+	$('#messages').append('<p>When you hit the "Attack" button you will score Attack Points, you will also loose Health Points.</p>');
+    $('#messages').append('<p>Attack Points are carried between games so you become stronger between games.</p>');
+    $('#messages').append('<p>Once you or your opponent loose all your Health Points you will die and the current game will end.</p>');
+	$('#messages').append('<h3>Good Luck!</h3>');
 	// user clicks a player to select it as defender (player) and then opponent
 	$('.players').click(function(){
 		// must pass the current player object to the function
