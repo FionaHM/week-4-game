@@ -3,19 +3,24 @@ var messageDisplay = false;
 var gamePlayersList ={
 	// id, class, image, attack power, health power, name, item referenece, 
 	playerData: [
-	["player1", "players", "assets/images/player1.png", "20", "100", "R2D2"], 
-	["player2","players",  "assets/images/player2.png", "6", " 120", "Princess Leia"], 
-	["player3","players",  "assets/images/player3.png", "7", "165", "Darth Vader"], 
-	["player4", "players", "assets/images/player4.png", "18", "150", "Death Star Trooper"], 
-	["player5", "players", "assets/images/player5.png", "15", "90", "Hans Solo"],
-	["player6", "players", "assets/images/player6.png", "5", "140", "AWing Pilot"]],
+	["player1", "players", "assets/images/player1.png", "0", "100", "R2D2"], 
+	["player2","players",  "assets/images/player2.png", "0", "100", "Princess Leia"], 
+	["player3","players",  "assets/images/player3.png", "0", "100", "Darth Vader"], 
+	["player4", "players", "assets/images/player4.png", "0", "100", "Star Trooper"], 
+	["player5", "players", "assets/images/player5.png", "0", "100", "Hans Solo"],
+	["player6", "players", "assets/images/player6.png", "0", "100", "AWing Pilot"]],
 
 
 init: function(){
 	// before i add anything I just make sure there is nothing left from any previous games
-		$('#startofgame').empty();
-		$('#defender').empty();
-		$('#opponent').empty();
+	$('#startofgame').empty();
+	$('#defender').empty();
+	$('#opponent').empty();
+	var lowerLimitHP = 50;
+	var upperLimitHP = 150;
+	var upperLimitAP = 15;
+	var lowerLimitAP = 2;
+
 
 	for(var i=0; i < this.playerData.length; i++){
 		// set variables
@@ -24,10 +29,9 @@ init: function(){
 		var b = '';
 		var c = '';
 
+		this.playerData[i][4] =  Math.floor(Math.random() * (upperLimitHP - lowerLimitHP) + lowerLimitHP);
+		this.playerData[i][3] =  Math.floor(Math.random() * (upperLimitAP - lowerLimitAP) + lowerLimitAP);
 		
-
-
-
 		b = $('<div/>', {
 	        id: currentID,
 	        class: this.playerData[i][1] + " col-xs-4 col-md-2",
@@ -53,8 +57,8 @@ init: function(){
 		//  label the image 
 
 		// add health and attack power stats
-		$(newCurrentID).append('<p class="base-score"> Health Points: ' + this.playerData[i][3] + '</p>');
-		$(newCurrentID).append('<p class="base-score"> Attack Power:  ' + this.playerData[i][4] + '</p>');
+		$(newCurrentID).append('<p class="base-score"> Health Points:     ' + this.playerData[i][4] + '</p>');
+		$(newCurrentID).append('<p class="base-score"> Attack Power:      ' + this.playerData[i][3] + '</p>');
 		newCurrentID = currentID + 'HP';
 		$('.base-score-hp').attr('id', newCurrentID );
 		newCurrentID = currentID + 'AP';
@@ -88,13 +92,20 @@ var currentGame = {
 			//set initial data
 			var localDefender = '#' + this.defender;
 			var localOpponent  = '#' + this.opponent;
+		
+			
 			// set base hp data
 			this.defenderBaseHp = $(localDefender).data('hp');
 			this.opponentBaseHp = $(localOpponent).data('hp');
+			
+
 			// the below values don't change between games
 			this.opponentCurrentHp = this.opponentBaseHp;
 			this.defenderBaseAttack = $(localDefender).attr('value');
 			this.opponentAttack = $(localOpponent).attr('value');
+			// decided to randomly generate base AP and HP for Defender and Opponent
+			// this.defenderBaseAttack = Math.round(Math.random() * upperLimitAP);
+			// this.opponentAttack = Math.round(Math.random() * upperLimitAP);
 			// the defender (player) Current HP and Attack Points are the base HP for the first opponent only
 			// they are carried over for the next games
 			if (this.countOpponents === 1) {
@@ -167,7 +178,8 @@ var currentGame = {
 					{
 						messageDisplay = true;
 		   				$('.modal').show();
-						$('#messages').append('<p>Game Over! <br> You have defeated all opponents. Congratulations!</p>');
+						$('#messages').html('<p>Game Over! <br> You have defeated all opponents. Congratulations!</p>');
+						$('#messages').append('<p>Select "Restart Game" to begin again.</p>');
 					}
 				} 
 				else if ((this.defenderCurrentHp) <= 0) {
@@ -233,14 +245,16 @@ function selectPlayers(player){
 			$('#messages').empty();
 		    // clear old HP and AP data
 		    $( '#defender > .players > p.base-score').empty();
+		
+
 		    // change the col layout
 		    $('#defender > .players').removeClass("col-xs-4 col-md-2");
 			$('#defender > .players').addClass("col-xs-12");
 
 		    // health and attack data display
 		    $( '#defender > .players > p.base-score').attr("id", "defenderhp");
-	   		$('#defenderhp').html('Health Points:   ' + $(player).data("hp") + '<br>');
-	   		$('#defenderhp').append('Attack Power:   ' +  $(player).attr("value") +  '<br>');
+	   		$('#defenderhp').html('<p>Health Points:   ' + $(player).data("hp") + '</p>');
+	   		$('#defenderhp').append('<p>Attack Power:   ' +  $(player).attr("value") +  '</p>');
 		 
 		}
 		else if (!currentGame.opponent){
@@ -256,8 +270,8 @@ function selectPlayers(player){
 		    // health and attack data display
 		    $( '#opponent > .players > p.base-score').attr("id", "opponenthp");
 			 // health and attack data display
-			$('#opponenthp').html('Health Points:   ' + $(player).data("hp") + '<br>');
-	   		$('#opponenthp').append('Attack Power:    ' + $(player).attr("value") + '<br>');
+			$('#opponenthp').html('<p>Health Points:   ' + $(player).data("hp") + '</p>');
+	   		$('#opponenthp').append('<p>Attack Power:    ' + $(player).attr("value") + '</p>');
 
 	   		//reshuffle remaining players initially
 
